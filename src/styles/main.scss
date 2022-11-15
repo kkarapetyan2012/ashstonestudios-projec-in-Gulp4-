@@ -19,7 +19,7 @@ $roboto-font-path: "../font/roboto";
 }
 
 // variables
-$body-font-regular: "Roboto", Arial, Helvetica, sans-serif;
+$body-font: "Roboto", Arial, Helvetica, sans-serif;
 $body-font-medium: "Roboto-Medium", Arial, Helvetica, sans-serif;
 $body-font-bold: "Roboto-Bold", Arial, Helvetica, sans-serif;
 $red: #EB0028;
@@ -40,6 +40,7 @@ $textColor: #969696;
 body {
   overflow-x: hidden;
   color: $black;
+  position: relative;
 }
 
 a {
@@ -79,12 +80,20 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 29px 20px 26px;
+    padding: 18px 20px 16px;
   }
   &__menu {
     &_mobile {
       visibility: hidden;
+      text-align: left;
+      width: 48px;
+      height: 48px;
     }
+  }
+  &__search {
+    width: 48px;
+    height: 48px;
+    text-align: right;
   }
 }
 
@@ -92,6 +101,11 @@ header {
   &__block {
     border-top: 1px solid $borderColor;
     border-bottom: 1px solid $borderColor;
+    background-color: $white;
+    width: 100%;
+    position: absolute;
+    top: 82px;
+    z-index: 99;
   }
   &__list {
     display: flex;
@@ -99,38 +113,49 @@ header {
   }
   &__item {
     position: relative;
-    padding: 21px 0 20px;
+    padding: 21px 0 19px;
   }
   &__item + &__item {
     padding-left: 32px;
   }
   &__link {
-   font-size: 1rem;
-   line-height: 1rem;
-   font-family: $body-font-medium;
-   color: $black;
    padding-bottom: 30px;
+   span {
+    font-size: 1rem;
+    line-height: 1rem;
+    font-family: $body-font-medium;
+    color: $black;
+    font-weight: 500;
+   }
   }
   &__submenu {
     &__list {
       display: none;
       position: absolute;
       background-color: $white;
-      transition: all .3s ease;
-      padding: 20px 12px 21px;
+      transition: all .3s ease !important;
+      padding: 20px 21px 20px 20px;
       border: 1px solid $borderColor;
-      top: 59px;
+      top: 58px;
       z-index: 2;
       min-width: 176px;
       span {
-        padding-right: 4px;
         color: $black;
+        font-size: 0.8125rem;
+        line-height: 0.8125rem;
+        font-family: $body-font;
       }
     }
     &__item {
       padding: 8px 0;
+      &:first-child {
+        padding: 0 0 8px;
+      }
+      &:last-child {
+        padding: 8px 0 0;
+      }
       &:not(:last-child) {
-        border-bottom: 1px solid $lightGray;
+        border-bottom: 1px solid $borderColor;
       }
     }
     &__link {
@@ -169,12 +194,18 @@ header {
   }
 }
 
+.sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+
 .product {
   &__list {
     display: flex;
     flex-wrap: wrap;
     gap: 48px 0;
-    padding-top: 48px;
+    padding-top: 96px;
     padding-bottom: 166px;
   }
   &__item {
@@ -186,10 +217,6 @@ header {
   }
   &__img {
     max-width: 100%;
-    min-width: 100%;
-  }
-  &__img_min-width {
-    min-width: 100%;
   }
   &__desc {
     padding-top: 1rem;
@@ -203,7 +230,7 @@ header {
     padding-bottom: 1rem;
   }
   &__title {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     line-height: 1.875rem;
     font-family: $body-font-bold;
     padding-bottom: 1rem;
@@ -213,7 +240,7 @@ header {
     color: $gray;
     font-size: 0.875rem;
     line-height: 1.25rem;
-    font-family: $body-font-regular;
+    font-family: $body-font;
   }
 }
 
@@ -231,7 +258,7 @@ header {
     &:not(:first-child) {
       color: $lightGray;
       font-weight: 400;
-      font-family: $body-font-regular;
+      font-family: $body-font;
       padding-left: 13px;
       position: relative;
       &::before {
@@ -252,12 +279,17 @@ header {
 @media screen and (max-width: 1024px) {
   .header {
     &__container {
-      padding: 29px 10px 20px;
+      padding: 26px 10px 20px;
     }
     &__menu {
       &_mobile {
         visibility: visible;
       }
+    }
+    &__close {
+      width: 48px;
+      height: 48px;
+      text-align: right;
     }
   }
   .menu {
@@ -265,12 +297,19 @@ header {
       position: absolute;
       transform: translateX(-320px);
       left: -320px;
-      transition: all .3s;
+      transition: all 1s;
       top: 0;
       background-color: $white;
       border: 1px solid $borderColor;
       height: 100vh;
       z-index: 10;
+      max-width: 320px;
+    }
+    &__list {
+      display: block;
+        background-color: $white;
+        height: calc(100vh - 80px);
+        padding-top: 17px;
     }
     &__item {
       padding: 16px 0 0;
@@ -301,6 +340,11 @@ header {
         padding: 0 12px;
         margin-top: -5px;
       }
+      &__item {
+        &:last-child {
+          padding: 8px 0;
+        }
+      }
     }
   }
   .mobile-menu.menu {
@@ -308,20 +352,10 @@ header {
       display: block;
       width: 100%;
       max-width: 320px;
-      position: absolute;
+      position: fixed;
       transform: translateX(0);
       left: 0;
-      transition: all .3s;
-    }
-  }
-  .mobile-menu {
-    .menu {
-      &__list {
-        display: block;
-        background-color: $white;
-        height: calc(100vh - 80px);
-        padding-top: 17px;
-      }
+      transition: all 1s;
     }
   }
   .mobile-menu {
@@ -330,13 +364,18 @@ header {
         &_mobile {
           display: flex;
           justify-content: space-between;
-          padding: 32px 20px 25px;
+          align-items: center;
+          padding: 22px 20px 11px;
           border-bottom: 1px solid $borderColor;
         }
       }
     }
   }
   .product {
+    &__list {
+      padding-top: 0;
+    }
+    
     &__item {
       padding: 0 10px;
     }
@@ -346,7 +385,7 @@ header {
 @media screen and (max-width: 768px) {
   .header {
     &__container {
-      padding: 29px 5px 20px;
+      padding: 26px 5px 20px;
     }
   }
   .product {
@@ -363,18 +402,20 @@ header {
 @media screen and (max-width: 600px) {
   .header {
     &__container {
-      padding: 29px 0 20px;
+      padding: 26px 0 20px;
     }
   }
   .product {
     &__list {
       gap: 32px 0;
       padding-bottom: 80px;
-      padding-top: 12px;
     }
     &__item {
       width: 100%;
       padding: 0;
+    }
+    &__img {
+      min-width: 100%;
     }
   }
 }
